@@ -1,2 +1,5 @@
 # ricardov_web_2026
-web provisional rvega
+
+Web provisional Ricardo Vega. 
+
+Visit here: https://ricardovv.github.io/ricardov_web_2026/  
