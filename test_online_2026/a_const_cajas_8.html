@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>C22 EXPLORADOR</title>
+
+
+
+<!-- Script dinámico para cargar datos -->
+<script id="data-script" src="data/cl_c22_data_ok.js"></script> 
+<script id="data-script" src="data/cl_c80_data_ok.js"></script> 
+<script id="data-script" src="data/fr_c70_data_ok.js"></script> 
+<script id="data-script" src="data/us_c70_data_ok.js"></script> 
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,900;1,300;1,700" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/comp_constit_style.css" />
+</head>  
+
+
+</head>
+
+<body>
+
+<div id="ventana_modal">
+    <button class="bot_cerrar" onclick="cerrarVentana();">Cerrar</button>
+    <div id="ventana_contenido">CONTENIDOS</div>
+</div>
+
+
+
+<!-- Nuevo menú de selección -->
+<div id="menu_datos">
+    <button class="bot_datos" onclick="cargarData('constitucion_data_c22')">Chile 2022</button>
+    <button class="bot_datos" onclick="cargarData('constitucion_data_c80')">Chile 1980</button>
+    <button class="bot_datos" onclick="cargarData('constitucion_data_f70')">USA 1789</button>
+    <button class="bot_datos" onclick="cargarData('constitucion_data_u70')">France 1968</button>
+</div>
+
+
+<div id="wrapper_todo">
+
+    <div id="introduccion"></div>
+    <!-- Botón de Conectar Todo -->
+    <button class="bot_copalsar bot_conectar" onclick="toggleTodasLasLineas()">Conectar Todo</button>
+    <button class="bot_copalsar" onclick="myFunction()">Colapsar Texto</button>
+
+
+    <div id="elwrapper">
+
+    <!-- Nuevo div verde -->
+    <div class="contenedor_lateral">
+        <h3>Keywords</h3>
+
+    </div>
+
+
+        <div class="columna_etiquetas">
+            <p id="etiqueta_cap" class="etiquetas">CAPITULOS</p>
+            </br>
+            <p id="etiquetas_art" class="etiquetas">ARTICULOS</p>    
+        </div>
+        <svg id="svg_lineas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100;"></svg>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+
+
+
+// New
+function resaltarPorKeyword(keyword) {
+    // Limpiamos antes de encender el nuevo grupo
+    apagarResaltado();
+
+    constitucion_data.constitucion_contenidos.forEach(cap => {
+        cap.cap_elementos.forEach(art => {
+            if (art.art_parrafos_palabras_frecuentes && art.art_parrafos_palabras_frecuentes.includes(keyword)) {
+                let elCajita = document.getElementById(art.art_id);
+                if (elCajita) {
+                    elCajita.classList.add('resaltado');
+                }
+            }
+        });
+    });
+}
+
+
+
+
+
+
+// New botones laterales para keyworda
+function crearBotonesKeywords() {
+    const palabras = ["palabra 1", "palabra 2", "palabra 3", "palabra 4", "palabra 5", "palabra 6", "palabra 7", "palabra 8", "palabra 9", "palabra 10", 
+                      "palabra 11", "palabra 12", "palabra 13", "palabra 14", "palabra 15", "palabra 16", "palabra 17", "palabra 18", "palabra 19", "palabra 20"];
+
+    const contenedorLateral = document.querySelector(".contenedor_lateral");
+
+    palabras.forEach(palabra => {
+        let btn = document.createElement("button");
+        btn.className = "bot_keywords";
+        btn.innerText = palabra;
+        
+        // Al entrar (rollover): resaltar
+        btn.onmouseover = function() {
+            resaltarPorKeyword(palabra);
+        };
+
+        // Al salir: apagar todo el resaltado
+        btn.onmouseout = function() {
+            apagarResaltado();
+        };
+
+        // Agregar evento click para resaltar
+        btn.onclick = function() {
+            resaltarPorKeyword(palabra);
+        }; 
+
+        contenedorLateral.appendChild(btn);
+    });
+}
+
+// Función para limpiar todos los resaltados
+function apagarResaltado() {
+    document.querySelectorAll('.cajita').forEach(el => el.classList.remove('resaltado'));
+}
+
+
+
+
+
+
+// Ejecutar la función cuando cargue la página
+window.onload = function() {
+    crearBotonesKeywords();
+};
+
+
+
+
+
+let constitucion_data = constitucion_data_c22;
+
+// Función para cambiar la referencia de los datos activos
+function cargarData(nombreVariable) {
+    // 1. Asignar la variable global 'constitucion_data' a la variable seleccionada
+    // Esto hace que el resto de tus funciones sigan funcionando sin cambios
+    if (window[nombreVariable]) {
+        window.constitucion_data = window[nombreVariable];
+    } else {
+        console.error("La variable " + nombreVariable + " no está definida.");
+        return;
+    }
+
+    // 2. Limpiar la interfaz actual
+    var elWrapper = document.getElementById('elwrapper');
+    elWrapper.innerHTML = '<div class="columna_etiquetas">' +
+                          '<p id="etiqueta_cap" class="etiquetas">CAPITULOS</p>' +
+                          '<p id="etiquetas_art" class="etiquetas">ARTICULOS</p>' +
+                          '</div>' +
+                          '<svg id="svg_lineas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100;"></svg>';
+    
+    // 3. Reiniciar variables globales
+    cant_datos = constitucion_data.constitucion_contenidos.length;
+    lineasVisibles = false;
+    cual = ""; // Resetear selección de línea
+    
+    // 4. Regenerar contenido con la nueva referencia de datos
+    for (var i = 0; i < cant_datos; i++) {
+        generador_capitulos(constitucion_data.constitucion_contenidos, 0, i);
+    }
+    generador_titulos("introduccion", constitucion_data);
+}
+
+
+
+
+
+
+
+
+var cant_datos = constitucion_data.constitucion_contenidos.length;
+var cual = "";
+var lineasVisibles = false;
+
+function generador_titulos_cabecera( _donde, _cual ){
+    var mostrar_intro = document.getElementById(_donde); 
+    var contenido = "<H2 id='constitucion_titulo'>" + _cual.constitucion_titulo + "</H2>";  
+    contenido += "<H3 id='constitucion_subtitulo'>" + _cual.constitucion_subtitulo + "</H3>";  
+    contenido += "<H4 id='constitucion_descripcion'></H4><p>" + _cual.constitucion_descripcion + "</p></br>"; 
+    mostrar_intro.innerHTML = contenido; 
+}
+
+
+
+function generador_capitulos(_data, _cant, _index){ 
+    var wrapper = 'elwrapper';
+    var container = document.createElement("div");
+    container.className = "columna";
+
+    var columnaTit = document.createElement("div");
+    columnaTit.className = "columnaTit cap_tooltip";
+    container.append(columnaTit);
+    columnaTit.append( _data[_index].cap_numero ); 
+
+    var columnaTitTextSpan = document.createElement("span");  
+    columnaTitTextSpan.className = "cap_tooltiptext";
+    columnaTitTextSpan.innerHTML =  "<h2>" + _data[_index].cap_titulo +"</h2></br>" +
+                                    "<h3>" + _data[_index].cap_keywords + "</h3>";
+    columnaTit.append(columnaTitTextSpan); 
+
+    document.getElementById(wrapper).appendChild(container);
+
+    for(var i = 0; i < _data[_index].cap_elementos.length; i++) {
+        var art = _data[_index].cap_elementos[i];
+        var cajita = document.createElement("div");
+        cajita.className = "cajita"; 
+        cajita.id = art.art_id;
+        
+        cajita.setAttribute("onmouseover", `crear_lineas("${art.art_id}", true)`);
+        cajita.setAttribute("onmouseout", `crear_lineas("${art.art_id}", false)`);
+
+        let data_art_parrafos_joined = art.art_parrafos.join("#");
+        cajita.setAttribute('onclick', `mostrarVentana("${art.art_numero}", "${art.art_titulo}", "${art.art_largo}", "${art.art_parrafos_cantidad}", "${data_art_parrafos_joined}", "${i}")`);
+
+        var textSpan = document.createElement("span");
+        textSpan.className = "art_tooltiptext";
+        textSpan.append( "°" );
+        cajita.append(textSpan);
+
+        container.append(cajita);
+
+        var sz = (art.art_largo >= 26) ? 66 : (art.art_largo >= 16 ? 33 : (art.art_largo >= 6 ? 22 : 11));
+        cajita.style.height = sz + "px";
+        cajita.innerHTML += art.art_numero;
+    }
+}
+
+function dibujarMarcador(container) {
+    if (!document.getElementById("arrowhead")) {
+        let defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        let marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+        marker.setAttribute("id", "arrowhead");
+        marker.setAttribute("markerWidth", "5");
+        marker.setAttribute("markerHeight", "5");
+        marker.setAttribute("refX", "2.5"); 
+        marker.setAttribute("refY", "2.5");
+        marker.setAttribute("orient", "auto");
+        let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", "2.5");
+        circle.setAttribute("cy", "2.5");
+        circle.setAttribute("r", "2");
+        circle.setAttribute("fill", "red");
+        marker.appendChild(circle);
+        defs.appendChild(marker);
+        container.appendChild(defs);
+    }
+}
+
+function dibujarLineasParaArticulo(articuloActual, container) {
+    let midesde = document.getElementById(articuloActual.art_id);
+    if (!midesde) return;
+
+    articuloActual.art_citados.forEach(idHacia => {
+        let mihacia = document.getElementById(idHacia);
+        if (!mihacia) return;
+
+        let nuevaLinea = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        nuevaLinea.setAttribute("fill", "none");
+        nuevaLinea.setAttribute("stroke", "chartreuse");
+        nuevaLinea.setAttribute("opacity", "0.8");
+        nuevaLinea.setAttribute("stroke-width", "1");
+        nuevaLinea.setAttribute("marker-end", "url(#arrowhead)");
+        container.appendChild(nuevaLinea);
+
+        let rect1 = midesde.getBoundingClientRect();
+        let rect2 = mihacia.getBoundingClientRect();
+        let x1 = rect1.x + rect1.width / 2;
+        let x2 = rect2.x + rect2.width / 2;
+        let y1 = rect1.y + window.scrollY;
+        let y2 = rect2.y + window.scrollY;
+        
+        nuevaLinea.setAttribute('d', `M ${x1} ${y1} C ${x1} ${y1 - 30}, ${x2} ${y2 - 30}, ${x2} ${y2}`);
+    });
+}
+
+function toggleTodasLasLineas() {
+    let lineas_donde = document.getElementById('svg_lineas');
+    if (lineasVisibles) {
+        lineas_donde.innerHTML = "";
+        lineasVisibles = false;
+        return;
+    }
+    lineasVisibles = true;
+    dibujarMarcador(lineas_donde);
+    constitucion_data.constitucion_contenidos.forEach(cap => {
+        cap.cap_elementos.forEach(art => {
+            if (art.art_citados && art.art_citados.length > 0) {
+                dibujarLineasParaArticulo(art, lineas_donde);
+            }
+        });
+    });
+}
+
+function crear_lineas(_idArticulo, _onoff) {
+    if (lineasVisibles) return;
+    let lineas_donde = document.getElementById('svg_lineas');
+    lineas_donde.innerHTML = "";  
+    if (!_onoff) return; 
+    dibujarMarcador(lineas_donde);
+
+    let articuloActual = null;
+    for (let cap of constitucion_data.constitucion_contenidos) {
+        articuloActual = cap.cap_elementos.find(a => a.art_id === _idArticulo);
+        if (articuloActual) break;
+    }
+    if (articuloActual) dibujarLineasParaArticulo(articuloActual, lineas_donde);
+    cual = _idArticulo;
+}
+
+window.addEventListener("resize", (e) => { 
+    if(!lineasVisibles && cual) crear_lineas(cual, true); 
+    if(lineasVisibles) {
+        let l = document.getElementById('svg_lineas');
+        l.innerHTML = "";
+        toggleTodasLasLineas(); toggleTodasLasLineas();
+    }
+});
+
+function mostrarVentana( _a, _b, _c, _d, _e, _index_parrrafo_b ) {
+    var ventana1 = document.getElementById( "ventana_modal" );
+    ventana1.style.display = "block";
+    ventana1.style.left = ((document.body.clientWidth / 2) - 250) + "px";
+    var ventana_contenido = document.getElementById( "ventana_contenido" );
+    let contenidos_modal = "<H3>Artículo nro: " + _a + "</H3><H2>Artículo Título: <span>"+_b+ "</span></H2><H4>Artículo Párrafos: </H4>";
+    let _e_spliteado = _e.split("#");
+    for (var i=0; i<_e_spliteado.length; i++) { contenidos_modal += "<p>" +_e_spliteado[i]+ "</p></br>"; }
+    ventana_contenido.innerHTML = contenidos_modal;
+}
+
+function cerrarVentana() { document.getElementById( "ventana_modal" ).style.display = "none"; }
+
+for (var i = 0; i < cant_datos; i++) {
+    generador_capitulos( constitucion_data.constitucion_contenidos, 0, i );
+}
+generador_titulos_cabecera("introduccion", constitucion_data);
+function myFunction() { document.getElementById("introduccion").classList.toggle("colapsar"); }
+
+</script>
+</body>
+</html>

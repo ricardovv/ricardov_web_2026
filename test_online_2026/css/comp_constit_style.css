@@ -1,0 +1,474 @@
+ /* INTRODUCCION ////////////////////////
+    font-family: 'Merriweather', serif;
+    font-family: 'Radio Canada', sans-serif;
+*/
+
+
+
+:root { 
+  --bg: #fff; /*.powderblue */
+  --cap1: red; /*.powderblue */
+  --cap2: orange; 
+  --art1: dodgerblue; /* cornflowerblue paleturquoise cornflowerblue powderblue lightskyblue */
+  --art2: DeepSkyBlue;
+  --texto1: white;
+  --texto2: navy;
+  --texto_cuerpo: #414e62;
+}
+
+body{
+	background: #16073d; /* indigi navy darkslateblue */
+
+}
+#wrapper_todo {
+	width: 92%; 
+	margin: 0 auto;
+	padding: 4px;
+	border: green 0px solid; 
+		overflow: hidden; /* Esto ayuda a que el wrapper reconozca el alto de los elementos flotantes */
+}
+
+
+#elwrapper {
+	width: 99%; 
+/*	background: white; */
+	border-top: 2px solid var(--art1); 
+	padding: 8px 0px 0px 0px; 
+  display:flex;
+	font-family: 'Merriweather', serif;
+}
+
+/* INTRODUCCION //////////////////////////////////////////////////////////////////////////////// */
+
+#introduccion {
+/*	background: white; */
+	width: 96%; 
+	height: 160px; 
+	margin: 5px 0px 10px 0px;
+	border: 0px solid yellow; 
+	display:block;
+	font-family: 'Merriweather', serif;
+}
+/*#constitucion_titulo, p {*/
+#constitucion_titulo {
+	width: 90%;
+	height: auto;
+	clear: right;
+	border: 0px solid red;
+	margin: 5px 0px 5px 0px;
+	float: left; 
+	font-size: 16px;
+	font-family: 'Merriweather', serif;
+	font-weight: bold;
+  font-style: normal;
+	color: red; 
+}
+h3 {
+	width: 98%;
+	height: auto;
+	clear: right;
+	border: 0px solid red;
+	margin: 5px 0px 5px 0px;
+	float: left; 
+	font-size: 18px;
+	font-family: 'Merriweather', serif;
+	font-weight: bold;
+	font-style: italic;
+	color: powderblue; 
+}
+h4 {
+	width: 98%;
+	height: auto;
+	clear: right;
+	border: 0px solid red;
+	float: left; 
+	margin: 4px 0px 4px 0px;
+	font-size: 14px;
+	font-family: 'Merriweather', serif;
+	font-weight: bold;
+	color: blue; 
+}
+p {
+	margin: 5px 0px 10px 0px;
+	float: left;
+	clear: right;	
+	font-size: 12px;
+	font-weight: normal;
+	font-family: 'Lato', sans-serif;
+	color: gainsboro; /* #414e62 */ 
+}
+
+/* VIS COLUMNAS //////////////////////////////////////////////////////////////////////////////// */
+.columna, .columna_etiquetas {
+/*	background: white; */
+	width: 50px; /*46 100%*/ 
+	border: 0px solid gainsboro; 
+	margin: 2px 4px ;
+	font-size: 12px;
+}
+
+.columnaTit { /* cajas capitulo arriba de cada columna*/
+	width: 90%; 
+	min-height: 18px;
+	padding: 3px 3px;
+	margin: 0px 2px 2px 0px;
+	border: 0px solid green; 
+	border-radius: 3px 3px 0px 0px; 
+	background: var(--cap1);
+	font-size: 11px;
+	font-family:'Lato', sans-serif;
+	font-weight: normal;
+	color: white; 
+}
+.columnaTit a:hover { /* cajas capitulo arriba de cada columna*/
+	background: orangered; 
+}
+.cajita { /* cajas articulos */ 
+	width: 90%; 
+	min-height: 4px;
+	padding: 1px 3px 2px 3px;
+	margin: 1px 0px;
+	border: 0px solid blue; 
+	border-radius: 0px 0px 3px 3px; 
+	background: var(--art1); /*indigi, blue, navy*/
+	font-size: 8px;
+	font-family: 'Lato', sans-serif;
+	font-weight: normal;
+	color: navy; 
+	animation-name: anim_entrada;
+	animation-duration: .3s;
+}
+.cajita:hover { /* cajas capitulo arriba de cada columna*/
+	background: var(--art2); 
+}
+.ventanita {
+	width: 250px; /* */ 
+	min-height: 250px;
+	position: relative;
+	background: gainsboro;
+	border: 1px solid red; 
+	visibility: visible;
+}
+
+
+.cajita.resaltado {
+    background-color: orange !important; /* El color que desees para resaltar */
+    border: 0px solid white;
+    opacity: 1 !important;
+}
+
+/* ETIQUETAS //////////////////////////////////////////////////////////////////////////////// */
+.etiquetas { /* cajas capitulo arriba de cada columna*/
+	width: 64px; /*34*/ 
+	height: 16px;
+	padding: 4px 0px 4px 3px;
+	margin: 0px 0px 3px 0px;
+	float: left;
+	clear: left;
+	border: 0px solid green; 
+	border-radius: 3px 3px 0px 0px; 
+	background: red;
+	font-size: 10px;
+	font-family: 'Lato', sans-serif;
+	font-weight: normal;
+	color: white; 
+}
+.columna_etiquetas {
+	/*	background: white; */
+	width: 64px; /*46*/ 
+	border: 0px solid gainsboro; 
+	margin: 2px 2px;
+	font-size: 9px;
+	/*	background: white; */
+	animation-name: anim_entrada;
+	animation-duration: .3s;
+}
+#etiquetas_art {
+	background: var(--art1);
+	color: var(--texto2);
+	margin: 0px 0px;
+	border-radius: 0px 0px 3px 3px; 
+	height: 18px;
+}
+
+
+/* CAP TOOLTIP DETALLE //////////////////////////////////////////////////////////////////////////////// */
+.cap_tooltip {
+	position: relative;
+ 	display: inline-block;
+}
+.cap_tooltip .cap_tooltiptext {
+	width: 240px;	height: 70px;
+	bottom: 130%;	left: 50%;
+	margin-left: -100px; /* Use half of the width (120/2 = 60), to center the tooltip */
+	padding: 6px 6px; 
+	visibility: hidden;
+	background: red;
+	border-radius: 8px;
+	position: absolute; /* Posicion del tooltip */
+	z-index: 1;
+}
+
+.cap_tooltip:hover .cap_tooltiptext {
+  visibility: visible;
+	animation-name: anim_entrada;
+	animation-duration: .4s;
+	box-shadow: 3px 3px 4px 1px slategrey;
+}
+
+/*triangulito abajo*/
+/*.cap_tooltip .cap_tooltiptext::after {*/
+.cap_tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: red transparent transparent transparent;
+}
+
+.cap_tooltiptext h2 {
+	padding: 6px 2px 2px 2px; 	
+	margin:  1px; 
+	text-align: left;
+	color: white;
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 1.;
+	font-weight: bold;
+	font-family: 'Lato', sans-serif;
+}
+.cap_tooltiptext h3 {
+	padding: 1px 2px; 	
+	margin:  1px; 
+	text-align: left;
+	color: white;
+	font-size: 10px;
+	font-weight: normal;
+	line-height: 1.2;
+	color: red; /* var(--art2); */
+}
+
+/* ART TOOLTIP DETALLE //////////////////////////////////////////////////////////////////////////////// */
+.art_tooltip {
+	position: relative;
+ 	display: inline-block;
+}
+.art_tooltip .art_tooltiptext {
+	width: 220px;	height: 70px;
+	top: -98px; 	left: 50%;
+	margin-left: -100px; /* mita del ancho (x/2 = 60) para centrar tooltip */
+	padding: 6px 6px;
+	visibility: hidden; /**/
+	background-color: lightcyan;
+	border-radius: 8px;
+	position: absolute; /* Posicion del tooltip */
+	z-index: 1;
+	text-align: left;
+	color: var(--texto21);
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 1.4;
+}
+.art_tooltip:hover .art_tooltiptext {
+  	visibility: visible;
+	animation-name: anim_entrada;
+	animation-duration: .3s;
+	box-shadow: 3px 3px 4px 1px slategrey;
+}
+/*triangulito abajo*/
+/*.cap_tooltip .cap_tooltiptext::after {*/
+.art_tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%;   left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: lightcyan transparent transparent transparent;
+/*	box-shadow: 3px 3px 4px 1px slategrey;*/
+}
+
+
+
+/* VENTANA CONTENIDO //////////////////////////////////////////////////////////////////////////////// */
+#ventana_modal {
+	width: 400px; height: 540px; 
+	top: 0; left: 0; 
+	position: fixed; 
+	display: none; /* visible */ 
+	z-index: 999;
+	border: gray 1px solid; 
+	border-radius: 5px;
+	box-shadow: 3px 3px 4px 1px slategrey;
+	padding: 12px;
+	overflow: auto; 
+	background-color: #FAFAFA; 
+	font-size: 12px; 
+	font-weight: normal; 
+	font-family: 'Merriweather', serif;
+	color: #000000;
+	}
+
+#ventana_modal h2 {
+	margin: 6px 1px 18px 1px;
+	font-size: 16px; 
+	font-family: 'Merriweather', serif;
+	font-weight: normal;	
+	font-style: italic;
+	color: var(--texto_cuerpo);
+}
+
+#ventana_modal span {
+	color: blue;
+		font-weight: bold;
+}
+
+
+#ventana_modal h3 {
+	margin: 4px 1px;
+	font-size: 14px; 
+	font-weight: normal; 
+	font-family: 'Merriweather', serif;
+	font-weight: bold;
+	color: red;
+}
+
+#ventana_modal h4 {
+	margin: 4px 1px;
+	font-size: 12px;
+	font-family: 'Merriweather', serif;
+	font-weight: normal;
+	color: gray;
+}
+
+
+#ventana_modal p {
+	width: 90%;
+	margin: 2px;
+	font-size: 12px;
+	font-weight: normal;
+	color: var(--texto_cuerpo);
+}
+
+.bot_cerrar {
+  margin: -12px 2px;
+  float: right;
+  padding: 6px 10px;
+  border: none;
+	border-radius: 0px 0px 6px 6px; 
+  background: blue; 
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  color: white;
+  transition-duration: 0.4s;
+}
+
+.bot_cerrar {
+  background: blue; 
+  color: white; 
+  border: none;
+}
+
+.bot_cerrar:hover {
+  background-color: deepskyblue;
+  color: white;
+}
+
+
+
+
+/* BOTONES INTERACCION //////////////////////////////////////////////////////////////////////////////// */
+.bot_copalsar, .bot_datos .bot_keywords  {
+  float: right;
+  margin: 5px 4px;
+  padding: 5px 8px;
+  border: none;
+	border-radius: 3px; 
+  background: blue; 
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  font-size: 10px;
+  color: white;
+  transition-duration: 0.4s;
+
+}
+.bot_datos {
+	float: right;
+  background: tomato; 
+  color: white; 
+  border: none;
+	border-radius: 3px; 
+	margin: 3px 2px;
+}
+
+.bot_keywords {
+	font-family: 'Merriweather', serif;
+	width: 94%;
+  background: tomato; 
+  font-size: 10px;
+  color: white; 
+  border: none;
+  border-radius: 3px; 
+  margin: 3px 1px 3px 1px;
+  padding: 3px 4px;
+}
+
+.bot_copalsar {
+  background: blue; 
+  color: white; 
+  border: none;
+}
+
+.bot_copalsar:hover {
+  background-color: deepskyblue;
+  color: white;
+}
+
+
+.colapsar {
+visibility: hidden;  
+}
+
+
+
+/* ANIMACIONES //////////////////////////////////////////////////////////////////////////////// */
+@keyframes anim_entrada {
+  from {opacity: 0.1;}
+  to {opacity: 1.0;}
+}
+
+
+
+
+/* LADO KEYWORDS //////////////////////////////////////////////////////////////////////////////// */
+
+.contenedor_lateral {
+    width: 120px;
+    height: auto;
+    border-right: 1px dotted var(--art1);
+    float: left;
+    margin-right: 10px;
+}
+
+
+.contenedor_lateral h3 {
+	width: 90%;
+	height: auto;
+	clear: right;
+	border: 0px solid red;
+	margin: 5px 0px 30px 0px;
+	float: left; 
+	font-size: 11px;
+	font-family: 'Merriweather', serif;
+	font-weight: bold;
+	font-style: italic;
+	color: red; 
+}
+
