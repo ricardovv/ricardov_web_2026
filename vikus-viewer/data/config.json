@@ -1,0 +1,87 @@
+{
+  "project": {
+    "name": "SBA",
+    "quality": 1
+  },
+  "loader": {
+    "info": "./data/info.md",
+    "timeline": "./data/timeline_converted.csv",
+    "items": "./data/converted.csv",
+    "layouts": [
+      {
+        "title": "OTRO"
+      }
+    ],
+    "textures": {
+      "medium": {
+        "size": 256,
+        "url": "./data/sprites/spritesheet.json"
+      },
+      "detail": {
+        "size": 1024,
+        "url": "./data/1024/"
+      },
+      "big": {
+        "size": 4096,
+        "url": "./data/4096/"
+      }
+    }
+  },
+  "style": {
+    "fontColor": "BurlyWood",
+    "fontColorActive": "#eae2cb",
+    "fontBackground": "#295b71",
+    "canvasBackground": "#851100", 
+    "timelineBackground": "#fff9eb",
+    "timelineFontColor": "#000",
+    "backgroundHeader": "#035151",
+    "fontColorHeader": "#f8774f",
+    "detailBackground": "#664d32",
+    "infoBackground": "#442d10",
+    "infoFontColor": "#ccc",
+    "searchbarBackground": "#295b71"
+  },
+  "projection": {
+    "columns": 4 
+  },
+  "detail": {
+    "structure": [
+      {
+        "name": "Description",
+        "source": "_description",
+        "display": "column",
+        "type": "text"
+      },
+      {
+        "name": "Year",
+        "source": "_year",
+        "display": "column",
+        "type": "text"
+      },
+      {
+        "name": "Material",
+        "source": "_material",
+        "display": "column",
+        "type": "text"
+      },
+      {
+        "name": "Dimensions",
+        "source": "column._width + 'mm * ' + column._height + 'mm'",
+        "display": "column",
+        "type": "function"
+      },
+      {
+        "name": "Keywords",
+        "source": "_keywords",
+        "display": "column",
+        "type": "array"
+      },
+      {
+        "name": "Id",
+        "source": "_id",
+        "display": "column",
+        "type": "text"
+      }
+    ]
+  }
+}
